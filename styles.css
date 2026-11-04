@@ -346,7 +346,7 @@ button:focus-visible,select:focus-visible {
     font-size:11px;
 }
 .block-wrap {
-    width:min(255px,67vw);
+    width:min(320px,80vw);
     margin:24px auto 17px;
     position:relative;
 }
@@ -830,7 +830,7 @@ button:focus-visible,select:focus-visible {
         padding:20px 12px 13px;
     }
     .block-wrap {
-        width:min(230px,64vw);
+        width:min(280px,78vw);
         margin:20px auto 13px;
     }
     .mine-footer {
