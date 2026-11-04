@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10131d">
+<title>MineClicker</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="logo">⛏️</div><div><h1>MineClicker</h1><p>Excava, mejora tus herramientas y desciende</p></div></div>
+    <div class="top-actions"><div class="save-state"><span class="save-dot"></span><span id="saveState">Partida guardada</span></div><button class="quiet-btn" id="exportBtn">Exportar partida</button><button class="quiet-btn" id="importBtn">Importar partida</button><input id="importFile" type="file" accept=".json,application/json" hidden><button class="quiet-btn" id="resetBtn">Reiniciar partida</button></div>
+  </header>
+  <section class="stats">
+    <div class="stat"><div class="k">🪙 Monedas</div><div class="v" id="coinsStat">35</div><div class="sub">Se consiguen vendiendo recursos</div></div>
+    <div class="stat"><div class="k">⛏️ Profundidad actual</div><div class="v" id="depthStat">Y = 64</div><div class="sub" id="depthSub">Superficie</div></div>
+    <div class="stat"><div class="k">🧱 Bloques rotos</div><div class="v" id="blocksStat">0</div><div class="sub">En todas las profundidades</div></div>
+    <div class="stat"><div class="k">🤖 Mineros</div><div class="v" id="minersStat">0</div><div class="sub" id="minersSub">Sin minería automática</div></div>
+  </section>
+  <main class="layout">
+    <section class="panel left-column">
+      <div class="panel-head"><h2>Herramientas</h2><span>Mejora cada una</span></div>
+      <div class="panel-body" id="toolsList"></div>
+      <div class="panel-body" style="padding-top:0"><p class="tool-note">Cada herramienta tiene su propio material, nivel y experiencia. Subir de nivel aumenta el daño de sus golpes.</p></div>
+    </section>
+    <section class="panel mine-panel mine-column">
+      <div class="mine-head"><div><h2 id="zoneTitle">Superficie</h2><p id="zoneSubtitle">Y 64–49 · 0/16 bloques excavados</p></div><select class="depth-select" id="depthSelect" aria-label="Cambiar de profundidad"></select></div>
+      <div class="depth-progress"><div class="depth-progress-top"><strong id="zoneProgressLabel">Progreso de la profundidad</strong><span id="zoneProgressCount">0 / 16</span></div><div class="zone-track"><div class="zone-fill" id="zoneProgressFill"></div></div></div>
+      <div class="mine-stage">
+        <div class="biome-label"><span id="biomeIcon" class="mini-biome-icon"></span><span id="biomeLabel">Superficie</span><span>·</span><span id="yLabel">Y = 64</span></div>
+        <div class="block-wrap"><button class="block-button" id="blockButton" aria-label="Picar bloque"><span class="block-cube" id="blockCube"><img class="block-symbol" id="blockSymbol" alt="Bloque" src=""><span class="cracks" id="cracks"></span></span></button></div>
+        <div class="block-caption" id="blockName">Tierra</div><div class="block-sub" id="blockSub">Bloque de minería</div>
+        <div class="hp-wrap"><div class="hp-top"><span>Resistencia del bloque</span><strong id="hpText">10 / 10</strong></div><div class="hp-track"><div class="hp-fill" id="hpFill"></div></div></div>
+        <div class="hintless-note">Toca el bloque para picarlo</div>
+      </div>
+      <div class="mine-footer"><div class="small-stat">Herramienta seleccionada: <strong id="selectedToolLabel">⛏️ Pico de madera</strong></div><div class="click-tip">El progreso se guarda automáticamente</div></div>
+    </section>
+    <div class="right-column">
+      <section class="panel inventory-panel">
+        <div class="panel-head"><h2>Inventario</h2><span id="inventoryKinds">0 recursos</span></div>
+        <div class="panel-body"><div class="inventory-list" id="inventoryList"><div class="empty">Todavía no has conseguido recursos.<br>Rompe bloques para llenar tu inventario.</div></div><button class="sell-all" id="sellAllBtn" disabled>Vender todos los recursos</button></div>
+      </section>
+      <section class="panel">
+        <div class="panel-head"><h2>Minería automática</h2><span>Ayuda extra</span></div>
+        <div class="panel-body"><div class="miner-card"><div class="miner-row"><strong>🤖 Minero automático</strong><span class="miner-count" id="minerCount">0</span></div><p>El minero usa las herramientas disponibles para romper bloques automáticamente. Cuantos más contrates, más rápido trabajará.</p><button class="primary-btn" id="hireMinerBtn">Contratar minero · <span class="miner-cost" id="minerCost">150 🪙</span></button></div></div>
+        <div class="feed"><div class="feed-title">Actividad reciente</div><div id="activityFeed"><div class="feed-line">Bienvenido a <b>MineClicker</b>. Empieza a excavar.</div></div></div>
+      </section>
+      <section class="panel">
+        <div class="panel-head"><h2>Profundidades</h2><span id="unlockedCount">1 / 8 abiertas</span></div>
+        <div class="zone-list" id="zoneList"></div>
+      </section>
+    </div>
+  </main>
+  <div class="footer-note">MineClicker · Tu partida se guarda en este navegador mediante almacenamiento local.</div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal-backdrop" id="resetModal"><div class="modal"><h3>¿Reiniciar la partida?</h3><p>Se borrarán las monedas, recursos, herramientas mejoradas y profundidades desbloqueadas. Esta acción no se puede deshacer.</p><div class="modal-actions"><button class="quiet-btn" id="cancelReset">Cancelar</button><button class="quiet-btn danger" id="confirmReset">Reiniciar</button></div></div></div>
+<script src="script.js"></script>
+</body>
+</html>
