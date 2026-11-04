@@ -195,8 +195,8 @@ button:focus-visible,select:focus-visible {
     filter:drop-shadow(0 2px 2px #0008);
 }
 .block-symbol {
-    width:clamp(150px,22vw,205px);
-    height:clamp(150px,22vw,205px);
+    width:clamp(210px,27vw,270px);
+    height:clamp(210px,27vw,270px);
     object-fit:contain;
     position:relative;
     z-index:1;
@@ -824,8 +824,8 @@ button:focus-visible,select:focus-visible {
         margin:20px auto 13px;
     }
     .block-symbol {
-        width:clamp(145px,48vw,190px);
-        height:clamp(145px,48vw,190px);
+        width:clamp(190px,58vw,235px);
+        height:clamp(190px,58vw,235px);
     }
     .mine-footer {
         padding:13px;
@@ -855,7 +855,7 @@ button:focus-visible,select:focus-visible {
         transition:none!important;
     }
 }
-/* Ajuste de espaciado para el bloque de notas de herramientas. */
+
 .panel-body-compact {
     padding-top:0;
 }
