@@ -1,5 +1,7 @@
 'use strict';
 
+(() => {
+
 const SAVE_KEY='mineclicker_save_v1';
 const toolInfo={pickaxe:{name:'Pico',icon:'⛏️',plural:'picos'},axe:{name:'Hacha',icon:'🪓',plural:'hachas'},shovel:{name:'Pala',icon:'🪏',plural:'palas'}};
 const tiers=['Madera','Piedra','Cobre','Hierro','Oro','Diamante','Netherita'];
