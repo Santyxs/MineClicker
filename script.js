@@ -58,8 +58,27 @@ const resources={
  shovel:'<path fill="#8a5935" d="M25 19l7 3-15 28-7-3z"/><path fill="#c3ccd4" d="M19 8l17 2 4 10-11 11-12-8z"/>',
  wood:'<path fill="#a56a3b" d="M18 14h28v36H18z"/><path fill="#d49a58" d="M22 14h20v36H22z"/>', stone:'<path fill="#aab3bc" d="M12 20l12-7 13 4 12-1 5 14-7 18-17 2-18-8z"/>', copper:'<path fill="#c87542" d="M12 20l12-7 13 4 12-1 5 14-7 18-17 2-18-8z"/>', iron:'<path fill="#d5c8b7" d="M12 20l12-7 13 4 12-1 5 14-7 18-17 2-18-8z"/>', gold:'<path fill="#f1c33f" d="M12 20l12-7 13 4 12-1 5 14-7 18-17 2-18-8z"/>', diamond:'<path fill="#55e0d1" d="M10 23l10-12h20l10 12-20 28z"/><path fill="#b4fff4" d="M20 11l10 40 10-40z"/>', netherite:'<path fill="#8c8795" d="M12 20l12-7 13 4 12-1 5 14-7 18-17 2-18-8z"/>'
 };
-function iconMarkup(id,cls='game-icon'){const shape=iconShapes[id]||iconShapes.stone;return `<svg class="${cls}" viewBox="0 0 64 64" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect x="5" y="5" width="54" height="54" rx="5" fill="#ffffff08"/>${shape}</svg>`}
-function toolMarkup(tool,tier){const mat=['wood','stone','copper','iron','gold','diamond','netherite'][tier]||'wood';return `<span class="tool-art">${iconMarkup(tool,'game-icon tool-svg')}<i>${iconMarkup(mat,'tool-material')}</i></span>`}
+const galleryVersion='1.21.6';
+const blockRenderIds={dirt:'dirt',grass:'grass_block',sand:'sand',oak_log:'oak_log',stone:'stone',coal_ore:'coal_ore',copper_ore:'copper_ore',iron_ore:'iron_ore',lapis_ore:'lapis_ore',deepslate:'deepslate',gold_ore:'gold_ore',redstone_ore:'redstone_ore',diamond_ore:'diamond_ore',obsidian:'obsidian',ancient_debris:'ancient_debris',cobblestone:'cobblestone'};
+const galleryIds={pickaxe:'wooden_pickaxe',axe:'wooden_axe',shovel:'wooden_shovel',wood:'oak_planks',stone:'cobblestone',copper:'copper_ingot',iron:'iron_ingot',gold:'gold_ingot',diamond:'diamond',netherite:'netherite_ingot',dirt:'dirt',sand:'sand',oak_log:'oak_log',coal:'coal',cobblestone:'cobblestone',copper_ore:'raw_copper',iron_ore:'raw_iron',lapis:'lapis_lazuli',deepslate:'cobbled_deepslate',gold_ore:'raw_gold',redstone:'redstone',diamond:'diamond',obsidian:'obsidian',ancient_debris:'ancient_debris'};
+function iconMarkup(id,cls='game-icon'){
+ const blockId=blockRenderIds[id];
+ const itemId=galleryIds[id];
+ const src=blockId?`https://blockrender.dev/render/block/${blockId}.png?size=128`:itemId?`https://mcitemgallery.com/images/${galleryVersion}/${itemId}.webp`:'';
+ const fallback=blockId?`https://mcitemgallery.com/images/${galleryVersion}/${itemId||blockId}.webp`:`https://blockrender.dev/render/item/${itemId||id}.png?size=128`;
+ if(src)return `<img class="${cls}" src="${src}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${fallback}'">`;
+ const shape=iconShapes[id]||iconShapes.stone;
+ return `<svg class="${cls}" viewBox="0 0 64 64" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect x="5" y="5" width="54" height="54" rx="5" fill="#ffffff08"/>${shape}</svg>`;
+}
+function toolMarkup(tool,tier){
+ const materials=['wooden','stone','iron','iron','golden','diamond','netherite'];
+ const mat=materials[tier]||'wooden';
+ const item=`${mat}_${tool}`;
+ const fallback=`https://blockrender.dev/render/item/${item}.png?size=128`;
+ const src=`https://mcitemgallery.com/images/${galleryVersion}/${item}.webp`;
+ const badge=['wood','stone','copper','iron','gold','diamond','netherite'][tier]||'wood';
+ return `<span class="tool-art"><img class="game-icon tool-svg" src="${src}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${fallback}'"><i>${iconMarkup(badge,'tool-material')}</i></span>`;
+}
 const $=id=>document.getElementById(id);
 const blankTools=()=>({pickaxe:{tier:0,level:1,xp:0},axe:{tier:0,level:1,xp:0},shovel:{tier:0,level:1,xp:0}});
 function initialState(){return {coins:35,tools:blankTools(),selected:'pickaxe',inventory:{},miners:0,totalMined:0,progress:Array(8).fill(0),unlocked:0,zone:0,block:null,activity:[]}}
