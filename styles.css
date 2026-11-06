@@ -122,6 +122,11 @@ button:focus-visible,select:focus-visible {
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+    color:var(--text);
+}
+#coinsStat {
+    color:var(--gold);
+    text-shadow:0 0 12px #f4c76b44;
 }
 .stat .sub {
     font-size:11px;
