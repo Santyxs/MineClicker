@@ -107,7 +107,7 @@ diamond:'diamond',
 deep:'deepslate',
 void:'obsidian',
 fire:'netherrack',
-robot:'hopper',
+robot:'iron_pickaxe',
 brick:'bricks',
 coin:'gold_ingot'
 };
