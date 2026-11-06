@@ -152,8 +152,30 @@ function breakCurrentBlock(tool){const d=blocks[s.block.id],amount=Math.floor(d.
  if(zoneDone&&s.zone===s.unlocked&&s.unlocked<7){s.unlocked++;const next=zones[s.unlocked];addActivity(`Nueva profundidad: ${next.name}`);notify(`¡Nueva profundidad desbloqueada: ${next.name}!`)}
  s.block=makeBlock();render();save();
 }
+function spawnDigParticles(count){
+ const wrap=document.querySelector('.block-wrap');
+ if(!wrap)return;
+ const n=Math.max(4,count|0);
+ for(let i=0;i<n;i++){
+  const p=document.createElement('img');
+  p.className='dig-particle';
+  p.src='https://mcitemgallery.com/particles/1.21.1/generic.gif';
+  p.alt='';
+  p.decoding='async';
+  const angle=Math.random()*Math.PI*2;
+  const dist=28+Math.random()*55;
+  p.style.setProperty('--dx',Math.cos(angle)*dist+'px');
+  p.style.setProperty('--dy',(Math.sin(angle)*dist*0.75-18)+'px');
+  p.style.left=(42+Math.random()*16)+'%';
+  p.style.top=(42+Math.random()*16)+'%';
+  p.style.width=(12+Math.random()*10)+'px';
+  p.style.height=p.style.width;
+  wrap.appendChild(p);
+  setTimeout(()=>p.remove(),650);
+ }
+}
 function hit(toolOverride=null,auto=false){const tool=toolOverride||s.selected;const b=s.block,d=blocks[b.id];if(tool!==d.tool)return;const t=s.tools[tool];if(t.tier<d.req)return;
- const power=damage(tool)*(auto?.72:1);b.hp=Math.max(0,b.hp-power);const btn=$('blockButton');btn.classList.remove('mining');void btn.offsetWidth;btn.classList.add('mining');if(b.hp<=0)breakCurrentBlock(tool);else{updateBlockView();if(!auto&&navigator.vibrate)navigator.vibrate(8);saveSoon()}}
+ const power=damage(tool)*(auto?.72:1);b.hp=Math.max(0,b.hp-power);const btn=$('blockButton');btn.classList.remove('mining');void btn.offsetWidth;btn.classList.add('mining');spawnDigParticles(b.hp<=0?14:7);if(b.hp<=0)breakCurrentBlock(tool);else{updateBlockView();if(!auto&&navigator.vibrate)navigator.vibrate(8);saveSoon()}}
 let saveSoonTimer=null;function saveSoon(){clearTimeout(saveSoonTimer);saveSoonTimer=setTimeout(save,450)}
 function selectZone(index){if(index<0||index>s.unlocked)return;s.zone=index;s.block=makeBlock();render();save()}
 function updateSelectedToolLabel(){
@@ -207,7 +229,6 @@ function updateBlockView(){const d=blocks[s.block.id],img=$('blockSymbol'),block
  const pct=Math.max(0,Math.min(100,s.block.hp/s.block.max*100));
  $('hpFill').style.width=pct+'%';
  $('hpText').textContent=`${Math.ceil(s.block.hp)} / ${s.block.max}`;
- $('cracks').style.opacity=String((1-pct/100)*.9);
 }
 function renderPlayerXp(){const data=playerLevelData();$('playerLevel').textContent=fmt(data.level);$('playerXpText').textContent=`${fmt(data.xp)} / ${fmt(data.needed)} XP`;$('playerXpFill').style.width=(data.xp/data.needed*100)+'%';$('playerXpTrack').setAttribute('aria-valuemax',String(data.needed));$('playerXpTrack').setAttribute('aria-valuenow',String(data.xp));$('playerXpTrack').setAttribute('aria-valuetext',`Nivel ${data.level}: ${data.xp} de ${data.needed} XP`)}
 function render(){ renderPlayerXp();$('coinsStat').textContent=fmt(s.coins);$('depthStat').textContent=`Y = ${getY(s.zone)}`;$('depthSub').textContent=zones[s.zone].name;$('blocksStat').textContent=fmt(s.totalMined);$('minersStat').textContent=fmt(s.miners);$('minersSub').textContent=s.miners?`Trabajando · ${Math.max(1,Math.round(2.7/(1+s.miners*.16)*10)/10)} s por golpe`:'Sin minería automática';$('zoneTitle').textContent=zones[s.zone].name;$('zoneSubtitle').textContent=zones[s.zone].range;$('zoneProgressCount').textContent=`${Math.min(16,s.progress[s.zone])} / 16`;$('zoneProgressFill').style.width=(Math.min(16,s.progress[s.zone])/16*100)+'%';updateMinerUI();renderDepthSelect();updateToolAffordability();renderInventory();updateBlockView();updateSelectedToolLabel();$('activityFeed').innerHTML=s.activity.length?s.activity.map(x=>`<div class="feed-line">${escapeHtml(x)}</div>`).join(''):'<div class="feed-line">Bienvenido a <b>MineClicker</b>. Empieza a excavacar.</div>'}
