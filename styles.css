@@ -961,3 +961,15 @@ button:focus-visible,select:focus-visible {
 .panel-body-compact {
     padding-top:0;
 }
+.coin-icon {
+    width: 1.15em;
+    height: 1.15em;
+    vertical-align: -0.2em;
+    display: inline-block;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+.coin-icon-sm {
+    width: 1em;
+    height: 1em;
+}
