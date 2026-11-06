@@ -38,7 +38,6 @@ button:focus-visible,select:focus-visible {
     display:grid; place-items:center;
     background:linear-gradient(145deg,#27384c,#20213d);
     border:1px solid #53617a;
-    font-size:23px;
     box-shadow:0 6px 20px #0005;
 }
 .brand h1 { font-size:21px; letter-spacing:.02em; margin:0; font-weight:850; }
@@ -177,10 +176,6 @@ button:focus-visible,select:focus-visible {
 .selected-mark {
     font-size:10px; color:var(--cyan);
     font-weight:800; letter-spacing:.05em;
-}
-.tool-meta {
-    display:flex; justify-content:space-between; gap:7px;
-    margin:11px 0 6px; font-size:10px; color:#aeb9cc;
 }
 .xp-track,.hp-track,.zone-track {
     height:6px; background:#0d121c; border-radius:99px;
@@ -429,21 +424,43 @@ button:focus-visible,select:focus-visible {
     * { animation:none!important; transition:none!important; }
 }
 .panel-body-compact { padding-top:0; }
-.coin-icon {
-    width: 1.1em; height: 1.1em;
-    vertical-align: -0.2em;
-    display: inline-block; flex: none;
+.ui-icon {
+    width: 1.25em;
+    height: 1.25em;
+    vertical-align: -0.25em;
+    display: inline-block;
+    object-fit: contain;
+    image-rendering: pixelated;
+    flex: none;
 }
-.stat .k .coin-icon { width: 1.25em; height: 1.25em; }
+.logo .ui-icon {
+    width: 28px;
+    height: 28px;
+}
+.stat .k .ui-icon,
+.stat .k .coin-icon {
+    width: 1.35em;
+    height: 1.35em;
+}
+.miner-row .ui-icon {
+    width: 1.3em;
+    height: 1.3em;
+}
+#selectedToolLabel .ui-icon {
+    width: 1.2em;
+    height: 1.2em;
+}
+.coin-icon {
+    width: 1.1em;
+    height: 1.1em;
+    vertical-align: -0.2em;
+    display: inline-block;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
 .upgrade-btn .coin-icon,
 .inv-sell .coin-icon,
-.miner-cost .coin-icon { width: 1em; height: 1em; }
-.ui-icon {
-    width: 1.15em; height: 1.15em;
-    vertical-align: -0.2em;
-    display: inline-block; flex: none;
+.miner-cost .coin-icon {
+    width: 1em;
+    height: 1em;
 }
-.logo .ui-icon { width: 28px; height: 28px; }
-.stat .k .ui-icon { width: 1.2em; height: 1.2em; }
-.miner-row .ui-icon { width: 1.25em; height: 1.25em; }
-#selectedToolLabel .ui-icon { width: 1.15em; height: 1.15em; }
