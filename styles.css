@@ -973,3 +973,11 @@ button:focus-visible,select:focus-visible {
     width: 1em;
     height: 1em;
 }
+/* Mejor soporte del emoji 🪙 en distintos sistemas */
+.stat .k,
+.upgrade-btn,
+.inv-sell,
+.miner-cost,
+.item-info small {
+    font-family: Inter, "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "Twemoji Mozilla", ui-sans-serif, system-ui, sans-serif;
+}
