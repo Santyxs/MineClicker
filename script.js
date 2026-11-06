@@ -95,25 +95,36 @@ function toolMarkup(tool,tier){
  return `<span class="tool-art"><img class="game-icon tool-svg" src="${src}" alt="${tiers[tier]||'Madera'} ${toolInfo[tool].name.toLowerCase()}" loading="lazy" decoding="async" onerror="if(!this.dataset.fallback){this.dataset.fallback='blockrender';this.src='${fallback}'}else{this.onerror=null;this.src='${finalFallback}'}"></span>`;
 }
 
-const iconSvgs={
-pickaxe:'<svg class="ui-icon" viewBox="0 0 64 64" aria-hidden="true"><path fill="#8a5935" d="M27 20l6 3-15 27-6-3z"/><path fill="#c4d0d9" d="M10 17l7-8 8 6 8-6 7 8-12 5-8-2z"/></svg>',
-axe:'<svg class="ui-icon" viewBox="0 0 64 64" aria-hidden="true"><path fill="#8a5935" d="M25 19l7 3-15 28-7-3z"/><path fill="#c4d0d9" d="M23 12l15-5 12 9-8 14-15-5-5-7z"/></svg>',
-shovel:'<svg class="ui-icon" viewBox="0 0 64 64" aria-hidden="true"><path fill="#8a5935" d="M25 19l7 3-15 28-7-3z"/><path fill="#c3ccd4" d="M19 8l17 2 4 10-11 11-12-8z"/></svg>',
-plant:'<svg class="ui-icon" viewBox="0 0 64 64" aria-hidden="true"><path fill="none" stroke="#5a9a45" stroke-width="4" stroke-linecap="round" d="M32 48V28"/><path fill="#6db84f" d="M32 28c-10-2-16-10-16-16 8 2 14 8 16 16z"/><path fill="#7ec95a" d="M32 28c10-2 16-10 16-16-8 2-14 8-16 16z"/><path fill="#8a5935" d="M30 48h4v8h-4z"/></svg>',
-stone:'<svg class="ui-icon" viewBox="0 0 64 64" aria-hidden="true"><path fill="#8a929c" d="M12 28l10-12 14 4 12-4 6 14-6 16-16 4-16-8z"/><path fill="#6a727c" d="M18 34l10-4 8 6-2 10-14 0z"/></svg>',
-candle:'<svg class="ui-icon" viewBox="0 0 64 64" aria-hidden="true"><rect x="26" y="28" width="12" height="26" rx="2" fill="#e8dcc8"/><path fill="#f4c76b" d="M32 12c4 6 4 10 0 14-4-4-4-8 0-14z"/><path fill="#ff8c42" d="M32 18c2 3 2 5 0 7-2-2-2-4 0-7z"/></svg>',
-moon:'<svg class="ui-icon" viewBox="0 0 64 64" aria-hidden="true"><path fill="#c9d4e8" d="M36 12a22 22 0 1 0 14 38 18 18 0 1 1-14-38z"/></svg>',
-diamond:'<svg class="ui-icon" viewBox="0 0 64 64" aria-hidden="true"><path fill="#55e0d1" d="M32 8l16 14-16 34L16 22z"/><path fill="#b4fff4" d="M32 8l8 14H24z"/><path fill="#3db8ad" d="M16 22h32L32 56z" opacity=".35"/></svg>',
-deep:'<svg class="ui-icon" viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="10" width="44" height="44" rx="4" fill="#3a4250"/><rect x="16" y="16" width="32" height="32" rx="2" fill="#252a34"/></svg>',
-void:'<svg class="ui-icon" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="22" fill="#1a1040"/><circle cx="20" cy="24" r="2" fill="#a78bfa"/><circle cx="40" cy="20" r="1.5" fill="#c4b5fd"/><circle cx="36" cy="40" r="2.5" fill="#8b5cf6"/><circle cx="24" cy="42" r="1.5" fill="#ddd6fe"/></svg>',
-fire:'<svg class="ui-icon" viewBox="0 0 64 64" aria-hidden="true"><path fill="#ed7d3a" d="M32 8c8 12 16 18 16 30a16 16 0 1 1-32 0c0-8 6-14 10-20 2 6 6 8 6 8s-2-8 0-18z"/><path fill="#f4c76b" d="M32 28c4 6 8 10 8 16a8 8 0 1 1-16 0c0-4 3-8 5-12 1 3 3 4 3 4s-1-4 0-8z"/></svg>',
-robot:'<svg class="ui-icon" viewBox="0 0 64 64" aria-hidden="true"><rect x="14" y="22" width="36" height="28" rx="4" fill="#7f91a9"/><rect x="20" y="28" width="10" height="8" rx="2" fill="#5fe1dc"/><rect x="34" y="28" width="10" height="8" rx="2" fill="#5fe1dc"/><rect x="24" y="40" width="16" height="4" rx="1" fill="#3a465b"/><rect x="28" y="12" width="8" height="10" fill="#7f91a9"/><circle cx="32" cy="12" r="4" fill="#5fe1dc"/></svg>',
-brick:'<svg class="ui-icon" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="12" width="22" height="12" rx="1" fill="#c45c4a"/><rect x="34" y="12" width="22" height="12" rx="1" fill="#b04e3e"/><rect x="8" y="28" width="14" height="12" rx="1" fill="#b04e3e"/><rect x="26" y="28" width="22" height="12" rx="1" fill="#c45c4a"/><rect x="52" y="28" width="4" height="12" rx="1" fill="#b04e3e"/><rect x="8" y="44" width="22" height="12" rx="1" fill="#c45c4a"/><rect x="34" y="44" width="22" height="12" rx="1" fill="#b04e3e"/></svg>',
-coin:'<svg class="ui-icon coin-icon" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="#e8b84a"/><circle cx="32" cy="32" r="28" fill="none" stroke="#a67c1a" stroke-width="4"/><circle cx="32" cy="32" r="20" fill="none" stroke="#f5d78e" stroke-width="2.5"/><text x="32" y="41" text-anchor="middle" font-size="26" font-weight="800" font-family="system-ui,Segoe UI,sans-serif" fill="#8b6914">$</text></svg>'
+const uiIconIds={
+pickaxe:'netherite_pickaxe',
+axe:'netherite_axe',
+shovel:'netherite_shovel',
+plant:'grass_block',
+stone:'stone',
+candle:'torch',
+moon:'coal_block',
+diamond:'diamond',
+deep:'deepslate',
+void:'obsidian',
+fire:'netherrack',
+robot:'hopper',
+brick:'bricks',
+coin:'gold_ingot'
 };
-function uiIcon(key){return iconSvgs[key]||'';}
-const $=id=>document.getElementById(id);
+function uiIcon(key){
+ const id=uiIconIds[key];
+ if(!id)return '';
+ const isBlock=['grass_block','stone','deepslate','obsidian','netherrack','bricks','coal_block'].includes(id);
+ const src=isBlock
+  ?`https://blockrender.dev/render/block/${id}.png?size=64`
+  :`https://mcitemgallery.com/images/${galleryVersion}/${id}.webp`;
+ const fb=isBlock
+  ?`https://mcitemgallery.com/images/${galleryVersion}/${id}.webp`
+  :`https://blockrender.dev/render/item/${id}.png?size=64`;
+ return `<img class="ui-icon" src="${src}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${fb}'">`;
+}
 const coinSvg=()=>uiIcon('coin');
+const $=id=>document.getElementById(id);
 const blankTools=()=>({pickaxe:{tier:0},axe:{tier:0},shovel:{tier:0}});
 function initialState(){return {coins:35,playerXp:0,tools:blankTools(),selected:'pickaxe',inventory:{},miners:0,totalMined:0,progress:Array(8).fill(0),unlocked:0,zone:0,block:null,activity:[]}}
 let s=loadState();let toastTimer=null;let autoClock=0;let lastSave=0;
