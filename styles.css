@@ -225,6 +225,7 @@ button:focus-visible,select:focus-visible {
     width:min(255px,67vw);
     margin:24px auto 17px;
     position:relative;
+    overflow:visible;
 }
 .block-button {
     width:100%; aspect-ratio:1; border:0; border-radius:0;
@@ -246,12 +247,7 @@ button:focus-visible,select:focus-visible {
     25% { transform:translate(-4px,2px) rotate(-1deg); }
     55% { transform:translate(4px,-2px) rotate(1deg); }
 }
-.cracks {
-    position:absolute; inset:16%; z-index:2;
-    pointer-events:none; opacity:0;
-    background:linear-gradient(118deg,transparent 47.5%,#121622b8 48%,transparent 48.5%),linear-gradient(30deg,transparent 58.5%,#121622a8 59%,transparent 59.5%),linear-gradient(155deg,transparent 66.5%,#121622a8 67%,transparent 67.5%);
-    mix-blend-mode:multiply;
-}
+.cracks { display:none; }
 .block-caption { font-size:14px; font-weight:750; margin-top:5px; }
 .block-sub { font-size:11px; color:var(--muted); margin-top:3px; }
 .hp-wrap { max-width:295px; margin:15px auto 0; text-align:left; }
@@ -473,4 +469,21 @@ button:focus-visible,select:focus-visible {
 }
 .mine-feed .feed-line {
     font-size: 11px;
+}
+.dig-particle {
+    position: absolute;
+    z-index: 6;
+    pointer-events: none;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    animation: dig-particle-fly .6s ease-out forwards;
+}
+@keyframes dig-particle-fly {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.25);
+    }
 }
