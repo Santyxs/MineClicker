@@ -65,8 +65,8 @@ const galleryIds={pickaxe:'wooden_pickaxe',axe:'wooden_axe',shovel:'wooden_shove
 function iconMarkup(id,cls='game-icon'){
  const blockId=blockRenderIds[id];
  const itemId=galleryIds[id];
- const src=blockId?`https://blockrender.dev/render/block/${blockId}.png?size=128`:itemId?`https://mcitemgallery.com/images/${galleryVersion}/${itemId}.webp`:'';
- const fallback=blockId?`https://mcitemgallery.com/images/${galleryVersion}/${itemId||blockId}.webp`:`https://blockrender.dev/render/item/${itemId||id}.png?size=128`;
+ const src=blockId?`https://blockrender.dev/render/block/${blockId}.png?size=256`:itemId?`https://mcitemgallery.com/images/${galleryVersion}/${itemId}.webp`:'';
+ const fallback=blockId?`https://mcitemgallery.com/images/${galleryVersion}/${itemId||blockId}.webp`:`https://blockrender.dev/render/item/${itemId||id}.png?size=256`;
  if(src)return `<img class="${cls}" src="${src}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${fallback}'">`;
  const shape=iconShapes[id]||iconShapes.stone;
  return `<svg class="${cls}" viewBox="0 0 64 64" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect x="5" y="5" width="54" height="54" rx="5" fill="#ffffff08"/>${shape}</svg>`;
@@ -89,7 +89,7 @@ function toolMarkup(tool,tier){
  const materials=['wooden','stone','copper','iron','golden','diamond','netherite'];
  const mat=materials[tier]||'wooden';
  const item=`${mat}_${tool}`;
- const fallback=`https://blockrender.dev/render/item/${item}.png?size=128`;
+ const fallback=`https://blockrender.dev/render/item/${item}.png?size=256`;
  const finalFallback=toolFallbackDataUri(tool,tier);
  const src=`https://mcitemgallery.com/images/${galleryVersion}/${item}.webp`;
  return `<span class="tool-art"><img class="game-icon tool-svg" src="${src}" alt="${tiers[tier]||'Madera'} ${toolInfo[tool].name.toLowerCase()}" loading="lazy" decoding="async" onerror="if(!this.dataset.fallback){this.dataset.fallback='blockrender';this.src='${fallback}'}else{this.onerror=null;this.src='${finalFallback}'}"></span>`;
@@ -116,11 +116,11 @@ function uiIcon(key){
  if(!id)return '';
  const isBlock=['grass_block','stone','deepslate','obsidian','netherrack','bricks','coal_block'].includes(id);
  const src=isBlock
-  ?`https://blockrender.dev/render/block/${id}.png?size=64`
+  ?`https://blockrender.dev/render/block/${id}.png?size=256`
   :`https://mcitemgallery.com/images/${galleryVersion}/${id}.webp`;
  const fb=isBlock
   ?`https://mcitemgallery.com/images/${galleryVersion}/${id}.webp`
-  :`https://blockrender.dev/render/item/${id}.png?size=64`;
+  :`https://blockrender.dev/render/item/${id}.png?size=256`;
  return `<img class="ui-icon" src="${src}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${fb}'">`;
 }
 const coinSvg=()=>uiIcon('coin');
@@ -200,7 +200,7 @@ function updateBlockView(){const d=blocks[s.block.id],img=$('blockSymbol'),block
   img.alt=d.name;
   img.onerror=()=>{if(itemId&&img.dataset.fallback!=='gallery'){img.dataset.fallback='gallery';img.src=`https://mcitemgallery.com/images/${galleryVersion}/${itemId}.webp`}else{img.onerror=null;img.src=blockFallbackSvg(s.block.id)}};
   img.dataset.fallback='';
-  img.src=blockId?`https://blockrender.dev/render/block/${blockId}.png?size=256`:itemId?`https://mcitemgallery.com/images/${galleryVersion}/${itemId}.webp`:blockFallbackSvg(s.block.id);
+  img.src=blockId?`https://blockrender.dev/render/block/${blockId}.png?size=512`:itemId?`https://mcitemgallery.com/images/${galleryVersion}/${itemId}.webp`:blockFallbackSvg(s.block.id);
   $('blockCube').style.setProperty('--block-a',d.a);
   $('blockCube').style.setProperty('--block-b',d.b);
  }
