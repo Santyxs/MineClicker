@@ -128,6 +128,88 @@ button:focus-visible,select:focus-visible {
     color:#8391a9;
     margin-top:2px;
 }
+.player-xp-panel {
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:12px 16px;
+    margin:-2px 0 17px;
+    border:1px solid #344653;
+    border-radius:14px;
+    background:linear-gradient(110deg,#18242b,#17212b 55%,#1b2030);
+    box-shadow:0 5px 18px #0002;
+}
+.player-level-badge {
+    width:52px;
+    height:52px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    flex:none;
+    border:1px solid #547b53;
+    border-radius:11px;
+    background:linear-gradient(145deg,#2a5138,#203b30);
+    box-shadow:inset 0 0 14px #7edb5620;
+}
+.player-level-badge span {
+    color:#b9d9b4;
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:.12em;
+}
+.player-level-badge strong {
+    color:#f0ffe8;
+    font-size:22px;
+    line-height:1.05;
+    font-weight:900;
+    font-variant-numeric:tabular-nums;
+}
+.player-xp-info {
+    flex:1;
+    min-width:0;
+}
+.player-xp-top {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:7px;
+    font-size:11px;
+}
+.player-xp-top strong {
+    color:#e8f4e5;
+    font-weight:800;
+}
+.player-xp-top span {
+    color:#c5e8a7;
+    font-size:10px;
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+}
+.player-xp-track {
+    height:11px;
+    padding:2px;
+    overflow:hidden;
+    border:1px solid #46534a;
+    border-radius:99px;
+    background:#101a19;
+    box-shadow:inset 0 2px 4px #0009;
+}
+.player-xp-fill {
+    height:100%;
+    width:0;
+    border-radius:99px;
+    background:linear-gradient(90deg,#4b9d32,#86d64c);
+    box-shadow:0 0 9px #8bdf4d88;
+    transition:width .25s ease;
+}
+.player-xp-hint {
+    margin:6px 0 0;
+    color:#91a99a;
+    font-size:10px;
+    line-height:1.35;
+}
 .layout {
     display:grid;
     grid-template-columns:280px minmax(360px,1fr) 295px;
@@ -784,6 +866,21 @@ button:focus-visible,select:focus-visible {
     .stats {
         grid-template-columns:repeat(2,1fr);
         gap:8px;
+    }
+    .player-xp-panel {
+        gap:10px;
+        padding:10px 11px;
+        margin-bottom:13px;
+    }
+    .player-level-badge {
+        width:46px;
+        height:46px;
+    }
+    .player-xp-top {
+        font-size:10px;
+    }
+    .player-xp-hint {
+        font-size:9px;
     }
     .stat {
         padding:11px 12px;

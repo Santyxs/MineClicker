@@ -19,6 +19,14 @@
     <div class="stat"><div class="k">🧱 Bloques rotos</div><div class="v" id="blocksStat">0</div><div class="sub">En todas las profundidades</div></div>
     <div class="stat"><div class="k">🤖 Mineros</div><div class="v" id="minersStat">0</div><div class="sub" id="minersSub">Sin minería automática</div></div>
   </section>
+  <section class="player-xp-panel" aria-label="Experiencia del jugador">
+    <div class="player-level-badge"><span>NIVEL</span><strong id="playerLevel">0</strong></div>
+    <div class="player-xp-info">
+      <div class="player-xp-top"><strong>Experiencia del jugador</strong><span id="playerXpText">0 / 7 XP</span></div>
+      <div class="player-xp-track" id="playerXpTrack" role="progressbar" aria-label="Progreso de experiencia" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0"><div class="player-xp-fill" id="playerXpFill"></div></div>
+      <p class="player-xp-hint">Pica minerales como carbón, lapislázuli, redstone y diamante para conseguir experiencia.</p>
+    </div>
+  </section>
   <main class="layout">
     <section class="panel left-column">
       <div class="panel-head"><h2>Herramientas</h2><span>Mejora cada una</span></div>
@@ -46,10 +54,6 @@
         <div class="panel-head"><h2>Minería automática</h2><span>Ayuda extra</span></div>
         <div class="panel-body"><div class="miner-card"><div class="miner-row"><strong>🤖 Minero automático</strong><span class="miner-count" id="minerCount">0</span></div><p>El minero usa las herramientas disponibles para romper bloques automáticamente. Cuantos más contrates, más rápido trabajará.</p><button class="primary-btn" id="hireMinerBtn">Contratar minero · <span class="miner-cost" id="minerCost">150 🪙</span></button></div></div>
         <div class="feed"><div class="feed-title">Actividad reciente</div><div id="activityFeed"><div class="feed-line">Bienvenido a <b>MineClicker</b>. Empieza a excavar.</div></div></div>
-      </section>
-      <section class="panel">
-        <div class="panel-head"><h2>Profundidades</h2><span id="unlockedCount">1 / 8 abiertas</span></div>
-        <div class="zone-list" id="zoneList"></div>
       </section>
     </div>
   </main>
