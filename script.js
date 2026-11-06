@@ -131,7 +131,7 @@ let s=loadState();let toastTimer=null;let autoClock=0;let lastSave=0;
 function loadState(){try{const raw=localStorage.getItem(SAVE_KEY);if(!raw)return initialState();const saved=JSON.parse(raw),base=initialState(),savedXp=Number(saved.playerXp);const savedCoins=Number(saved.coins);return {...base,...saved,coins:Number.isFinite(savedCoins)?Math.max(0,Math.floor(savedCoins)):base.coins,playerXp:Number.isFinite(savedXp)?Math.max(0,Math.min(1000000000,Math.floor(savedXp))):0,tools:{...base.tools,...saved.tools},progress:Array.isArray(saved.progress)?[...base.progress.map((_,i)=>Math.max(0,Number(saved.progress[i])||0))]:base.progress,inventory:saved.inventory||{},activity:Array.isArray(saved.activity)?saved.activity.slice(0,5):[],unlocked:Math.max(0,Math.min(7,Number(saved.unlocked)||0)),zone:Math.max(0,Math.min(7,Number(saved.zone)||0))}}catch(e){return initialState()}}
 function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(s));$('saveState').textContent='Partida guardada';$('saveState').style.color='#7f91a9';lastSave=Date.now()}catch(e){$('saveState').textContent='No se pudo guardar'}}
 function exportGame(){save();const payload={app:'MineClicker',version:1,exportedAt:new Date().toISOString(),state:s};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='mineclicker-partida.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);notify('Partida exportada. Guarda el archivo para transferirlo.')}
-async function importGame(file){if(!file)return;try{const payload=JSON.parse(await file.text());const data=payload?.app==='MineClicker'&&payload?.state?payload.state:payload;if(!data||typeof data!=='object'||!data.tools||!Array.isArray(data.progress)||!data.inventory||!Number.isFinite(Number(data.coins)))throw new Error('Archivo no válido');if(!confirm('¿Importar esta partida? Reemplazará el progreso actual de este navegador.'))return;localStorage.setItem(SAVE_KEY,JSON.stringify(data));s=loadState();if(!s.block||!blocks[s.block.id])s.block=makeBlock();render();save();notify('Partida importada correctamente.')}catch(e){notify('No se pudo importar: archivo inválido o dañado.')}finally{$('importFile').value=''}}
+async function importGame(file){if(!file)return;try{const payload=JSON.parse(await file.text());const data=payload?.app==='MineClicker'&&payload?.state?payload.state:payload;if(!data||typeof data!=='object'||!data.tools||!Array.isArray(data.progress)||!data.inventory||!Number.isFinite(Number(data.coins)))throw new Error('Archivo no válido');if(!confirm('¿Importar esta partida? Reemplazará el progreso actual de este navegador.'))return;localStorage.setItem(SAVE_KEY,JSON.stringify(data));s=loadState();if(!s.block||!blocks[s.block.id])s.block=makeBlock();renderTools();render();save();notify('Partida importada correctamente.')}catch(e){notify('No se pudo importar: archivo inválido o dañado.')}finally{$('importFile').value=''}}
 function fmt(n){const v=Math.floor(Number(n)||0);return v.toLocaleString('es-ES')}
 function xpToNextLevel(level){if(level<=15)return 2*level+7;if(level<=30)return 5*level-38;return 9*level-158}
 function playerLevelData(){let remaining=Math.max(0,Math.floor(s.playerXp||0)),level=0,needed=xpToNextLevel(level);while(remaining>=needed){remaining-=needed;level++;needed=xpToNextLevel(level)}return {level,xp:remaining,needed}}
@@ -156,8 +156,35 @@ function hit(toolOverride=null,auto=false){const tool=toolOverride||s.selected;c
  const power=damage(tool)*(auto?.72:1);b.hp=Math.max(0,b.hp-power);const btn=$('blockButton');btn.classList.remove('mining');void btn.offsetWidth;btn.classList.add('mining');if(b.hp<=0)breakCurrentBlock(tool);else{updateBlockView();if(!auto&&navigator.vibrate)navigator.vibrate(8);saveSoon()}}
 let saveSoonTimer=null;function saveSoon(){clearTimeout(saveSoonTimer);saveSoonTimer=setTimeout(save,450)}
 function selectZone(index){if(index<0||index>s.unlocked)return;s.zone=index;s.block=makeBlock();render();save()}
-function selectTool(tool){s.selected=tool;renderTools();$('selectedToolLabel').innerHTML=`${uiIcon(toolInfo[tool].icon)} ${toolInfo[tool].name} de ${tiers[s.tools[tool].tier].toLowerCase()}`;save()}
-function upgradeTool(tool){const t=s.tools[tool],next=t.tier+1;if(next>=tiers.length)return;const cost=tierCosts[next];if(s.coins<cost){notify('No tienes monedas suficientes');return}s.coins-=cost;t.tier=next;addActivity(`${toolInfo[tool].name} mejorado a ${tiers[next]}`);notify(`${toolInfo[tool].name} mejorado: ${tiers[next]}`);render();save()}
+function updateSelectedToolLabel(){
+ const tool=s.selected,tier=s.tools[tool].tier,key=tool+':'+tier;
+ const el=$('selectedToolLabel');
+ if(!el||el.dataset.key===key)return;
+ el.dataset.key=key;
+ el.innerHTML=`${uiIcon(toolInfo[tool].icon)} ${toolInfo[tool].name} de ${tiers[tier].toLowerCase()}`;
+}
+function updateToolAffordability(){
+ const tools=['pickaxe','axe','shovel'];
+ document.querySelectorAll('#toolsList .tool-card').forEach((card,i)=>{
+  const tool=tools[i];if(!tool)return;
+  const t=s.tools[tool];
+  const up=card.querySelector('.upgrade-btn');
+  if(!up)return;
+  if(t.tier>=tiers.length-1){up.disabled=true;up.textContent='Material máximo';return}
+  up.disabled=s.coins<tierCosts[t.tier+1];
+ });
+}
+function updateMinerUI(){
+ const cost=hireCost(),el=$('minerCost');
+ if(el&&el.dataset.cost!==String(cost)){
+  el.dataset.cost=String(cost);
+  el.innerHTML=`${fmt(cost)} ${coinSvg()}`;
+ }
+ $('hireMinerBtn').disabled=s.coins<cost;
+ $('minerCount').textContent=fmt(s.miners);
+}
+function selectTool(tool){s.selected=tool;renderTools();updateSelectedToolLabel();save()}
+function upgradeTool(tool){const t=s.tools[tool],next=t.tier+1;if(next>=tiers.length)return;const cost=tierCosts[next];if(s.coins<cost){notify('No tienes monedas suficientes');return}s.coins-=cost;t.tier=next;addActivity(`${toolInfo[tool].name} mejorado a ${tiers[next]}`);notify(`${toolInfo[tool].name} mejorado: ${tiers[next]}`);renderTools();render();save()}
 function hireCost(){return Math.round(150*Math.pow(1.7,s.miners))}
 function hireMiner(){const cost=hireCost();if(s.coins<cost){notify('No tienes monedas suficientes');return}s.coins-=cost;s.miners++;addActivity('Has contratado un minero automático');notify('Minero contratado');render();save()}
 function sellResource(id){const count=s.inventory[id]||0;if(!count)return;const gain=count*resources[id].price;s.coins+=gain;delete s.inventory[id];addActivity(`Vendidos ${count} ${resources[id].name.toLowerCase()} · +${gain} monedas`);notify(`+${gain} monedas`);render();save()}
@@ -166,13 +193,28 @@ function renderTools(){const root=$('toolsList');root.innerHTML='';for(const too
 function renderInventory(){const root=$('inventoryList');root.innerHTML='';const ids=Object.keys(s.inventory).filter(id=>s.inventory[id]>0).sort((a,b)=>resources[b].price-resources[a].price);$('inventoryKinds').textContent=`${ids.length} ${ids.length===1?'recurso':'recursos'}`;if(!ids.length){root.innerHTML='<div class="empty">Todavía no has conseguido recursos.<br>Rompe bloques para llenar tu inventario.</div>';$('sellAllBtn').disabled=true;return}for(const id of ids){const r=resources[id],n=s.inventory[id];const row=document.createElement('div');row.className='inventory-row';row.innerHTML=`<div class="item-icon">${iconMarkup(id)}</div><div class="item-info"><strong>${r.name}</strong><small>${r.price} ${coinSvg()} por unidad</small></div><div class="item-count">×${fmt(n)}</div>`;const btn=document.createElement('button');btn.className='inv-sell';btn.innerHTML=`Vender · ${fmt(n*r.price)} ${coinSvg()}`;btn.addEventListener('click',()=>sellResource(id));row.appendChild(btn);root.appendChild(row)}$('sellAllBtn').disabled=false}
 function renderDepthSelect(){const sel=$('depthSelect');sel.innerHTML='';for(let i=0;i<=s.unlocked;i++){const opt=document.createElement('option');opt.value=i;opt.textContent=zones[i].name;if(i===s.zone)opt.selected=true;sel.appendChild(opt)}}
 function blockFallbackSvg(id){const shape=iconShapes[id]||iconShapes.stone;const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges"><rect x="5" y="5" width="54" height="54" rx="5" fill="#ffffff08"/>${shape}</svg>`;return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)}
-function updateBlockView(){const d=blocks[s.block.id],z=zones[s.zone],img=$('blockSymbol'),blockId=blockRenderIds[s.block.id],itemId=galleryIds[s.block.id];$('blockName').textContent=d.name;img.alt=d.name;img.onerror=()=>{if(itemId&&img.dataset.fallback!=='gallery'){img.dataset.fallback='gallery';img.src=`https://mcitemgallery.com/images/${galleryVersion}/${itemId}.webp`}else{img.onerror=null;img.src=blockFallbackSvg(s.block.id)}};img.dataset.fallback='';img.src=blockId?`https://blockrender.dev/render/block/${blockId}.png?size=256`:itemId?`https://mcitemgallery.com/images/${galleryVersion}/${itemId}.webp`:blockFallbackSvg(s.block.id);$('blockCube').style.setProperty('--block-a',d.a);$('blockCube').style.setProperty('--block-b',d.b);const pct=Math.max(0,Math.min(100,s.block.hp/s.block.max*100));$('hpFill').style.width=pct+'%';$('hpText').textContent=`${Math.ceil(s.block.hp)} / ${s.block.max}`;$('cracks').style.opacity=String((1-pct/100)*.9);$('selectedToolLabel').innerHTML=`${uiIcon(toolInfo[s.selected].icon)} ${toolInfo[s.selected].name} de ${tiers[s.tools[s.selected].tier].toLowerCase()}`}
+function updateBlockView(){const d=blocks[s.block.id],img=$('blockSymbol'),blockId=blockRenderIds[s.block.id],itemId=galleryIds[s.block.id];
+ $('blockName').textContent=d.name;
+ if(img.dataset.blockId!==s.block.id){
+  img.dataset.blockId=s.block.id;
+  img.alt=d.name;
+  img.onerror=()=>{if(itemId&&img.dataset.fallback!=='gallery'){img.dataset.fallback='gallery';img.src=`https://mcitemgallery.com/images/${galleryVersion}/${itemId}.webp`}else{img.onerror=null;img.src=blockFallbackSvg(s.block.id)}};
+  img.dataset.fallback='';
+  img.src=blockId?`https://blockrender.dev/render/block/${blockId}.png?size=256`:itemId?`https://mcitemgallery.com/images/${galleryVersion}/${itemId}.webp`:blockFallbackSvg(s.block.id);
+  $('blockCube').style.setProperty('--block-a',d.a);
+  $('blockCube').style.setProperty('--block-b',d.b);
+ }
+ const pct=Math.max(0,Math.min(100,s.block.hp/s.block.max*100));
+ $('hpFill').style.width=pct+'%';
+ $('hpText').textContent=`${Math.ceil(s.block.hp)} / ${s.block.max}`;
+ $('cracks').style.opacity=String((1-pct/100)*.9);
+}
 function renderPlayerXp(){const data=playerLevelData();$('playerLevel').textContent=fmt(data.level);$('playerXpText').textContent=`${fmt(data.xp)} / ${fmt(data.needed)} XP`;$('playerXpFill').style.width=(data.xp/data.needed*100)+'%';$('playerXpTrack').setAttribute('aria-valuemax',String(data.needed));$('playerXpTrack').setAttribute('aria-valuenow',String(data.xp));$('playerXpTrack').setAttribute('aria-valuetext',`Nivel ${data.level}: ${data.xp} de ${data.needed} XP`)}
-function render(){ renderPlayerXp();$('coinsStat').textContent=fmt(s.coins);$('depthStat').textContent=`Y = ${getY(s.zone)}`;$('depthSub').textContent=zones[s.zone].name;$('blocksStat').textContent=fmt(s.totalMined);$('minersStat').textContent=fmt(s.miners);$('minersSub').textContent=s.miners?`Trabajando · ${Math.max(1,Math.round(2.7/(1+s.miners*.16)*10)/10)} s por golpe`:'Sin minería automática';$('zoneTitle').textContent=zones[s.zone].name;$('zoneSubtitle').textContent=`${zones[s.zone].range} · ${Math.min(16,s.progress[s.zone])}/16 bloques excavados`;$('zoneProgressCount').textContent=`${Math.min(16,s.progress[s.zone])} / 16`;$('zoneProgressFill').style.width=(Math.min(16,s.progress[s.zone])/16*100)+'%';$('minerCount').textContent=fmt(s.miners);$('minerCost').innerHTML=`${fmt(hireCost())} ${coinSvg()}`;$('hireMinerBtn').disabled=s.coins<hireCost();renderDepthSelect();renderTools();renderInventory();updateBlockView();$('activityFeed').innerHTML=s.activity.length?s.activity.map(x=>`<div class="feed-line">${escapeHtml(x)}</div>`).join(''):'<div class="feed-line">Bienvenido a <b>MineClicker</b>. Empieza a excavacar.</div>'}
-function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){ renderPlayerXp();$('coinsStat').textContent=fmt(s.coins);$('depthStat').textContent=`Y = ${getY(s.zone)}`;$('depthSub').textContent=zones[s.zone].name;$('blocksStat').textContent=fmt(s.totalMined);$('minersStat').textContent=fmt(s.miners);$('minersSub').textContent=s.miners?`Trabajando · ${Math.max(1,Math.round(2.7/(1+s.miners*.16)*10)/10)} s por golpe`:'Sin minería automática';$('zoneTitle').textContent=zones[s.zone].name;$('zoneSubtitle').textContent=`${zones[s.zone].range} · ${Math.min(16,s.progress[s.zone])}/16 bloques excavados`;$('zoneProgressCount').textContent=`${Math.min(16,s.progress[s.zone])} / 16`;$('zoneProgressFill').style.width=(Math.min(16,s.progress[s.zone])/16*100)+'%';updateMinerUI();renderDepthSelect();updateToolAffordability();renderInventory();updateBlockView();updateSelectedToolLabel();$('activityFeed').innerHTML=s.activity.length?s.activity.map(x=>`<div class="feed-line">${escapeHtml(x)}</div>`).join(''):'<div class="feed-line">Bienvenido a <b>MineClicker</b>. Empieza a excavacar.</div>'}
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&','<':'<','>':'>','"':'"',"'":'&#39;'}[c]))}
 function autoMine(){if(!s.miners)return;const now=Date.now(),interval=Math.max(650,2700/(1+s.miners*.16));if(now-autoClock<interval)return;autoClock=now;const d=blocks[s.block.id],tool=chooseAutoTool(d);if(!tool)return;hit(tool,true)}
 $('exportBtn').addEventListener('click',exportGame);$('importBtn').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',e=>importGame(e.target.files?.[0]));$('blockButton').addEventListener('click',()=>hit());$('depthSelect').addEventListener('change',e=>selectZone(Number(e.target.value)));$('sellAllBtn').addEventListener('click',sellAll);$('hireMinerBtn').addEventListener('click',hireMiner);
-$('resetBtn').addEventListener('click',()=>$('resetModal').classList.add('open'));$('cancelReset').addEventListener('click',()=>$('resetModal').classList.remove('open'));$('resetModal').addEventListener('click',e=>{if(e.target===$('resetModal'))$('resetModal').classList.remove('open')});$('confirmReset').addEventListener('click',()=>{s=initialState();s.block=makeBlock();localStorage.removeItem(SAVE_KEY);$('resetModal').classList.remove('open');render();save();notify('Partida reiniciada')});
-render();save();setInterval(()=>{autoMine();if(Date.now()-lastSave>12000)save()},200);
+$('resetBtn').addEventListener('click',()=>$('resetModal').classList.add('open'));$('cancelReset').addEventListener('click',()=>$('resetModal').classList.remove('open'));$('resetModal').addEventListener('click',e=>{if(e.target===$('resetModal'))$('resetModal').classList.remove('open')});$('confirmReset').addEventListener('click',()=>{s=initialState();s.block=makeBlock();localStorage.removeItem(SAVE_KEY);$('resetModal').classList.remove('open');renderTools();render();save();notify('Partida reiniciada')});
+renderTools();render();save();setInterval(()=>{autoMine();if(Date.now()-lastSave>12000)save()},200);
 window.addEventListener('beforeunload',save);
 })();
