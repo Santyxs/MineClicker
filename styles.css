@@ -221,12 +221,6 @@ button:focus-visible,select:focus-visible {
 .depth-progress-top strong { color:#eaf0fb; }
 .zone-fill { background:linear-gradient(90deg,#8b78f5,#58caca); }
 .mine-stage { padding:26px 18px 14px; text-align:center; }
-.biome-label {
-    display:inline-flex; align-items:center; gap:7px;
-    padding:6px 10px; border:1px solid #37445b;
-    background:#202b3c; border-radius:99px;
-    color:#cad6e7; font-size:11px;
-}
 .block-wrap {
     width:min(255px,67vw);
     margin:24px auto 17px;
@@ -266,7 +260,6 @@ button:focus-visible,select:focus-visible {
     font-size:10px; color:#aeb9cb; margin-bottom:6px;
 }
 .hp-fill { background:linear-gradient(90deg,#e1787e,#f4c76b); }
-.hintless-note { font-size:10px; color:#76839a; margin-top:16px; }
 .mine-footer {
     padding:15px 18px 18px; border-top:1px solid #2b3446;
     display:flex; align-items:center; justify-content:space-between; gap:12px;
@@ -423,7 +416,7 @@ button:focus-visible,select:focus-visible {
 @media(prefers-reduced-motion:reduce) {
     * { animation:none!important; transition:none!important; }
 }
-.panel-body-compact { padding-top:0; }
+.panel-body-compact { padding-top: 0; }
 .ui-icon {
     width: 1.25em;
     height: 1.25em;
