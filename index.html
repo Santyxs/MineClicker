@@ -17,7 +17,7 @@
     <div class="stat"><div class="k"><img class="ui-icon coin-icon" src="https://mcitemgallery.com/images/1.21.9/gold_ingot.webp" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://blockrender.dev/render/item/gold_ingot.png?size=64'"> Monedas</div><div class="v" id="coinsStat">35</div><div class="sub">Se consiguen vendiendo recursos</div></div>
     <div class="stat"><div class="k"><img class="ui-icon" src="https://mcitemgallery.com/images/1.21.9/iron_pickaxe.webp" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://blockrender.dev/render/item/iron_pickaxe.png?size=64'"> Profundidad actual</div><div class="v" id="depthStat">Y = 64</div><div class="sub" id="depthSub">Superficie</div></div>
     <div class="stat"><div class="k"><img class="ui-icon" src="https://blockrender.dev/render/block/bricks.png?size=64" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://mcitemgallery.com/images/1.21.9/bricks.webp'"> Bloques rotos</div><div class="v" id="blocksStat">0</div><div class="sub">En todas las profundidades</div></div>
-    <div class="stat"><div class="k"><img class="ui-icon" src="https://mcitemgallery.com/images/1.21.9/hopper.webp" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://blockrender.dev/render/item/hopper.png?size=64'"> Mineros</div><div class="v" id="minersStat">0</div><div class="sub" id="minersSub">Sin minería automática</div></div>
+    <div class="stat"><div class="k"><img class="ui-icon" src="https://mcitemgallery.com/images/1.21.9/iron_pickaxe.webp" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://blockrender.dev/render/item/iron_pickaxe.png?size=64'"> Mineros</div><div class="v" id="minersStat">0</div><div class="sub" id="minersSub">Sin minería automática</div></div>
   </section>
   <section class="player-xp-panel" aria-label="Experiencia del jugador">
     <div class="player-level-badge"><span>NIVEL</span><strong id="playerLevel">0</strong></div>
@@ -31,7 +31,6 @@
     <section class="panel left-column">
       <div class="panel-head"><h2>Herramientas</h2><span>Mejora cada una</span></div>
       <div class="panel-body" id="toolsList"></div>
-      <div class="panel-body panel-body-compact"><p class="tool-note">Cada herramienta tiene su propio material. Mejorar el material aumenta el daño de sus golpes y permite romper bloques más duros.</p></div>
     </section>
     <section class="panel mine-panel mine-column">
       <div class="mine-head"><div><h2 id="zoneTitle">Superficie</h2><p id="zoneSubtitle">Y 64–49</p></div><select class="depth-select" id="depthSelect" aria-label="Cambiar de profundidad"></select></div>
@@ -49,7 +48,7 @@
       </section>
       <section class="panel">
         <div class="panel-head"><h2>Minería automática</h2><span>Ayuda extra</span></div>
-        <div class="panel-body"><div class="miner-card"><div class="miner-row"><strong><img class="ui-icon" src="https://mcitemgallery.com/images/1.21.9/hopper.webp" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://blockrender.dev/render/item/hopper.png?size=64'"> Minero automático</strong><span class="miner-count" id="minerCount">0</span></div><p>El minero usa las herramientas disponibles para romper bloques automáticamente. Cuantos más contrates, más rápido trabajará.</p><button class="primary-btn" id="hireMinerBtn">Contratar minero · <span class="miner-cost" id="minerCost">150 <img class="ui-icon coin-icon" src="https://mcitemgallery.com/images/1.21.9/gold_ingot.webp" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://blockrender.dev/render/item/gold_ingot.png?size=64'"></span></button></div></div>
+        <div class="panel-body"><div class="miner-card"><div class="miner-row"><strong><img class="ui-icon" src="https://mcitemgallery.com/images/1.21.9/iron_pickaxe.webp" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://blockrender.dev/render/item/iron_pickaxe.png?size=64'"> Minero automático</strong><span class="miner-count" id="minerCount">0</span></div><p>El minero usa las herramientas disponibles para romper bloques automáticamente. Cuantos más contrates, más rápido trabajará.</p><button class="primary-btn" id="hireMinerBtn">Contratar minero · <span class="miner-cost" id="minerCost">150 <img class="ui-icon coin-icon" src="https://mcitemgallery.com/images/1.21.9/gold_ingot.webp" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://blockrender.dev/render/item/gold_ingot.png?size=64'"></span></button></div></div>
         <div class="feed"><div class="feed-title">Actividad reciente</div><div id="activityFeed"><div class="feed-line">Bienvenido a <b>MineClicker</b>. Empieza a excavacar.</div></div></div>
       </section>
     </div>
