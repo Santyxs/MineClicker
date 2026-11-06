@@ -464,7 +464,6 @@ button:focus-visible,select:focus-visible {
     place-items:center;
     background:transparent;
 }
-/* No se dibuja una caja detrás del bloque 3D. */
 .block-cube:before,
 .block-cube:after {
     content:none;
@@ -478,15 +477,9 @@ button:focus-visible,select:focus-visible {
     animation:hit .15s linear;
 }
 @keyframes hit {
-    0%,100% {
-        transform:translate(0);
-    }
-    25% {
-        transform:translate(-4px,2px) rotate(-1deg);
-    }
-    55% {
-        transform:translate(4px,-2px) rotate(1deg);
-    }
+    0%,100% { transform:translate(0); }
+    25% { transform:translate(-4px,2px) rotate(-1deg); }
+    55% { transform:translate(4px,-2px) rotate(1deg); }
 }
 .cracks {
     position:absolute;
@@ -832,152 +825,68 @@ button:focus-visible,select:focus-visible {
     color:#ffc2c9;
 }
 @media(max-width:1120px) {
-    .layout {
-        grid-template-columns:255px minmax(340px,1fr);
-    }
+    .layout { grid-template-columns:255px minmax(340px,1fr); }
     .right-column {
         grid-column:1/-1;
         display:grid;
         grid-template-columns:1fr 1fr;
         gap:14px;
     }
-    .right-column>.panel {
-        min-width:0;
-    }
-    .inventory-panel {
-        grid-row:span 2;
-    }
-    .right-column .panel {
-        height:100%;
-    }
+    .right-column>.panel { min-width:0; }
+    .inventory-panel { grid-row:span 2; }
+    .right-column .panel { height:100%; }
 }
 @media(max-width:720px) {
-    .app {
-        padding:14px 12px 24px;
-    }
-    .topbar {
-        align-items:flex-start;
-    }
-    .brand h1 {
-        font-size:18px;
-    }
-    .top-actions {
-        gap:6px;
-    }
-    .quiet-btn {
-        padding:8px;
-        font-size:10px;
-    }
-    .stats {
-        grid-template-columns:repeat(2,1fr);
-        gap:8px;
-    }
-    .player-xp-panel {
-        gap:10px;
-        padding:10px 11px;
-        margin-bottom:13px;
-    }
-    .player-level-badge {
-        width:46px;
-        height:46px;
-    }
-    .player-xp-top {
-        font-size:10px;
-    }
-    .player-xp-hint {
-        font-size:9px;
-    }
-    .stat {
-        padding:11px 12px;
-    }
-    .stat .v {
-        font-size:19px;
-    }
-    .layout {
-        display:flex;
-        flex-direction:column;
-    }
-    .layout>*,.right-column {
-        width:100%;
-    }
-    .left-column {
-        order:2;
-    }
-    .mine-column {
-        order:1;
-        width:100%;
-    }
-    .right-column {
-        order:3;
-        display:flex;
-        flex-direction:column;
-    }
-    .mine-panel {
-        min-height:0;
-    }
-    .mine-head {
-        padding:13px;
-    }
-    .mine-stage {
-        padding:20px 12px 13px;
-    }
-    .block-wrap {
-        width:min(230px,64vw);
-        margin:20px auto 13px;
-    }
-    .block-symbol {
-        width:clamp(190px,58vw,235px);
-        height:clamp(190px,58vw,235px);
-    }
-    .mine-footer {
-        padding:13px;
-    }
-    .panel-head {
-        padding:13px;
-    }
-    .panel-body {
-        padding:11px;
-    }
-    .zone-list {
-        grid-template-columns:repeat(2,minmax(0,1fr));
-    }
-    .depth-option {
-        padding:8px;
-    }
-    .depth-select {
-        max-width:155px;
-    }
-    .footer-note {
-        margin-top:13px;
-    }
+    .app { padding:14px 12px 24px; }
+    .topbar { align-items:flex-start; }
+    .brand h1 { font-size:18px; }
+    .top-actions { gap:6px; }
+    .quiet-btn { padding:8px; font-size:10px; }
+    .stats { grid-template-columns:repeat(2,1fr); gap:8px; }
+    .player-xp-panel { gap:10px; padding:10px 11px; margin-bottom:13px; }
+    .player-level-badge { width:46px; height:46px; }
+    .player-xp-top { font-size:10px; }
+    .player-xp-hint { font-size:9px; }
+    .stat { padding:11px 12px; }
+    .stat .v { font-size:19px; }
+    .layout { display:flex; flex-direction:column; }
+    .layout>*,.right-column { width:100%; }
+    .left-column { order:2; }
+    .mine-column { order:1; width:100%; }
+    .right-column { order:3; display:flex; flex-direction:column; }
+    .mine-panel { min-height:0; }
+    .mine-head { padding:13px; }
+    .mine-stage { padding:20px 12px 13px; }
+    .block-wrap { width:min(230px,64vw); margin:20px auto 13px; }
+    .block-symbol { width:clamp(190px,58vw,235px); height:clamp(190px,58vw,235px); }
+    .mine-footer { padding:13px; }
+    .panel-head { padding:13px; }
+    .panel-body { padding:11px; }
+    .zone-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .depth-option { padding:8px; }
+    .depth-select { max-width:155px; }
+    .footer-note { margin-top:13px; }
 }
 @media(prefers-reduced-motion:reduce) {
-    * {
-        animation:none!important;
-        transition:none!important;
-    }
+    * { animation:none!important; transition:none!important; }
 }
-/* Ajuste de espaciado para el bloque de notas de herramientas. */
 .panel-body-compact {
     padding-top:0;
 }
 .coin-icon {
-    width: 1.15em;
-    height: 1.15em;
+    width: 1.1em;
+    height: 1.1em;
     vertical-align: -0.2em;
     display: inline-block;
-    object-fit: contain;
-    image-rendering: pixelated;
+    flex: none;
 }
-.coin-icon-sm {
+.stat .k .coin-icon {
+    width: 1.25em;
+    height: 1.25em;
+}
+.upgrade-btn .coin-icon,
+.inv-sell .coin-icon,
+.miner-cost .coin-icon {
     width: 1em;
     height: 1em;
-}
-/* Mejor soporte del emoji 🪙 en distintos sistemas */
-.stat .k,
-.upgrade-btn,
-.inv-sell,
-.miner-cost,
-.item-info small {
-    font-family: Inter, "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "Twemoji Mozilla", ui-sans-serif, system-ui, sans-serif;
 }
